@@ -1,8 +1,10 @@
-import { addNewUsers, removeUsers } from "./user";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import path from "path";
 
+// Data
+import { addNewUsers, removeUsers } from "./user";
+import { addNewBlogPosts, removeBlogPosts } from "./blogPost";
 dotenv.config({
   path: path.join(__dirname, `../.env.${process.env.NODE_ENV}`),
 });
@@ -10,16 +12,18 @@ dotenv.config({
 // seeders add
 const add = async () => {
   await addNewUsers();
+  await addNewBlogPosts();
   // add other add seeders here
 };
 
 // seeders remove
 const remove = async () => {
-  await Promise.all([removeUsers()]);
+  await removeUsers();
+  await removeBlogPosts();
   // add other remove seeders here
 };
 
-// seeders run
+// seeders runner
 const runSeeders = async () => {
   await mongoose
     .connect(process.env.MONGO_URI)

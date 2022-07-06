@@ -1,7 +1,12 @@
-import { User } from "../mongooDB";
+// import { User } from "../mongooDB";
 
 export const resolvers = {
   Query: {
-    users: async () => await User.find(),
+    users: async (_, __, { dataSources: { users } }) => {
+      return await users.getAllUsers();
+    },
+    blogPosts: async (_, __, { dataSources: { blogPosts } }) => {
+      return await blogPosts.getAllBlogPosts();
+    },
   },
 };

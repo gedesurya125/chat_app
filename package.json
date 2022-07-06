@@ -1,0 +1,16 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "repository": "git@github.com:gedesurya125/chat_app.git",
+  "author": "gedesurya125 <gedesurya125@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "server:dev": "yarn --cwd server dev",
+    "client:dev": "yarn --cwd client dev"
+  }
+}

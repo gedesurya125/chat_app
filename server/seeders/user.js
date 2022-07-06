@@ -1,12 +1,11 @@
-import { User } from "../mongooDB";
-import { faker } from "@faker-js/faker";
+import { User } from '../mongooDB';
+import { faker } from '@faker-js/faker';
 
 const FAKE_COUNT = 10;
 
-// Local methods
-const addNewUser = async (name) => {
-  console.log("this is a new user", name);
-  const newUser = new User({ name });
+// Add singgle user
+const addNewUser = async (name, age, email, role, userName, password) => {
+  const newUser = new User({ name, age, email, role, userName, password });
   await newUser.save();
 };
 
@@ -14,12 +13,18 @@ const addNewUser = async (name) => {
 export const addNewUsers = async () => {
   for (let i = 0; i < FAKE_COUNT; i++) {
     const fakeName = faker.name.findName();
-    await addNewUser(fakeName);
+    const roles = ['admin', 'user'];
+    await addNewUser(
+      fakeName,
+      faker.datatype.number({ min: 10, max: 60, precision: 1 }),
+      `${fakeName.replace(/\s/gi, '_')}@${faker.company.bsBuzz()}.com`,
+      `${roles[faker.datatype.number({ min: 0, max: 1, precision: 1 })]}`,
+      faker.name.lastName(),
+      faker.datatype.string(10)
+    );
   }
-  console.log("new users has been added");
 };
 
 export const removeUsers = async () => {
   await User.deleteMany();
-  console.log("users has been deleted");
 };

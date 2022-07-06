@@ -7,11 +7,25 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import path from "path";
 
+// Data Source
+import { Users, BlogPosts } from "./graphql";
+
+// Modal
+import { User, BlogPost } from "./mongooDB";
+
 dotenv.config({
   path: path.join(__dirname, `.env.${process.env.NODE_ENV}`),
 });
 
 const startApolloServer = async (typeDefs, resolvers) => {
+  // Connect to mongodb atlas server
+  await mongoose
+    .connect(process.env.MONGO_URI)
+    .then(() => console.log("database connection established"))
+    .catch((err) => console.log("error when connecting to Mongoose", err));
+
+  // Data
+
   // Create express app instance
   const app = express();
 
@@ -23,6 +37,10 @@ const startApolloServer = async (typeDefs, resolvers) => {
     typeDefs,
     resolvers,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    dataSources: () => ({
+      users: new Users(User),
+      blogPosts: new BlogPosts(BlogPost),
+    }),
   });
 
   // Start the apollo server
@@ -31,12 +49,6 @@ const startApolloServer = async (typeDefs, resolvers) => {
   // Add apollo server to Express server
   server.applyMiddleware({ app });
   await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-
-  // Connect to mongodb atlas server
-  await mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => console.log("database connection established"))
-    .catch((err) => console.log("error when connecting to Mongoose", err));
 
   //
   // add();
