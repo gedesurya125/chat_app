@@ -4,13 +4,57 @@ import { TextInput, PrimaryButton } from 'components';
 import { registrationInitialValue, RegistrationFormSchema } from './utils';
 import useTranslation from 'next-translate/useTranslation';
 
+import { useMutation, gql } from '@apollo/client';
+
+const USER_REGISTRATION = gql`
+  mutation Mutation($input: UserRegistration) {
+    userRegistration(input: $input) {
+      code
+      error
+      message
+      user {
+        firstName
+        middleName
+        lastName
+        email
+        phone
+      }
+    }
+  }
+`;
+
 export const ReagistrationForm = () => {
+  const [registrateUser, { data, loading, error }] =
+    useMutation(USER_REGISTRATION);
+
   const { t } = useTranslation('login');
+
+  if (loading) {
+    console.log('submitting');
+  }
+
+  if (error) {
+    console.log(
+      'this is the errro',
+      // @ts-ignore
+      error?.networkError?.result?.errors[0].message
+    );
+  }
+
+  if (data) {
+    console.log('datanya mass', data);
+  }
   return (
     <Formik
       enableReinitialize
       validationSchema={RegistrationFormSchema}
-      onSubmit={() => {}}
+      onSubmit={(values) => {
+        registrateUser({
+          variables: {
+            input: values
+          }
+        });
+      }}
       initialValues={registrationInitialValue}
     >
       <Form>
@@ -34,7 +78,7 @@ export const ReagistrationForm = () => {
         />
         <TextInput name="email" inputId="email" label="Email" type="email" />
         <TextInput
-          name="phoneNumber"
+          name="phone"
           inputId="phone-number"
           label="Phone Number"
           type="tel"

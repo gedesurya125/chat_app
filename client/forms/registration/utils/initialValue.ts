@@ -3,5 +3,5 @@ export const registrationInitialValue = {
   middleName: '',
   lastName: '',
   email: '',
-  phoneNumber: ''
+  phone: ''
 };

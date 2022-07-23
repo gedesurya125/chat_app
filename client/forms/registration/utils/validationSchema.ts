@@ -5,5 +5,5 @@ export const RegistrationFormSchema = Yup.object().shape({
   middleName: Yup.string().required(),
   lastName: Yup.string().required(),
   email: Yup.string().email().required(),
-  phoneNumber: Yup.number().required()
+  phone: Yup.number().required()
 });
