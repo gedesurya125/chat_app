@@ -6,8 +6,12 @@ const Query = {
 
 const Mutation = {
   userRegistration: async (_, args, ___) => {
-    console.log('args', args);
-    return 'userRegistered';
+    return {
+      code: 200,
+      error: false,
+      message: 'registration success',
+      user: args.input
+    };
   }
 };
 

@@ -6,10 +6,24 @@ export const userSchema = gql`
   }
 
   extend type Mutation {
-    userRegistration(input: UserRegistration): String!
+    userRegistration(input: UserRegistration): UserRegistrationResponse!
   }
 
   input UserRegistration {
+    firstName: String!
+    middleName: String!
+    lastName: String!
+    email: String!
+    phone: String!
+  }
+  type UserRegistrationResponse {
+    code: Int!
+    error: Boolean!
+    message: String!
+    user: RegisteredUser
+  }
+
+  type RegisteredUser {
     firstName: String!
     middleName: String!
     lastName: String!
