@@ -14,7 +14,7 @@ import typeDefs from './graphql/schemas';
 import resolvers from './graphql/resolvers';
 
 // Data Source
-import { Users, BlogPosts } from './graphql';
+import { Users, BlogPosts } from './graphql/datasource';
 
 // Modal
 import { User, BlogPost } from './mongooDB';
