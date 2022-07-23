@@ -8,15 +8,15 @@ interface TextInputProps extends InputProps {
   inputId: string;
   label?: string;
   placeholder?: string;
-  type: 'text' | 'email' | 'password';
+  type: 'text' | 'email' | 'password' | 'tel';
 }
-export const TextInput: React.FC<TextInputProps> = ({
+export const TextInput = ({
   name,
   inputId,
   label,
   type = 'text',
   sx
-}) => {
+}: TextInputProps) => {
   const [field, meta] = useField(name);
   return (
     <Box sx={{ mt: '0.5rem', ...sx }}>

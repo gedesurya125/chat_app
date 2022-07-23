@@ -1,3 +1,3 @@
-export * from "./resolvers";
-export * from "./schema";
-export * from "./datasource";
+export * from './resolvers';
+export * from './datasource';
+export * from './schemas';

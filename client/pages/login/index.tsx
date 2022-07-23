@@ -3,19 +3,23 @@ import React from 'react';
 // Externaln Components
 import {
   Box,
+  Button,
   GridTemplate,
   Heading,
   Paragraph,
   useThemeConfig
 } from '@gedesurya125/surya-ui';
-
-import { Form, Formik } from 'formik';
+import useTranslation from 'next-translate/useTranslation';
 
 // Local Components
-import { TextInput, PrimaryButton } from 'components';
-import { LoginForm } from 'forms';
+import { LoginForm, ReagistrationForm } from 'forms';
 
 const Login = () => {
+  const [showRegistration, setShowRegistration] = React.useState(false);
+
+  const handleShowRegistrationCard = () => setShowRegistration(true);
+  const handleShowLoginCard = () => setShowRegistration(false);
+
   return (
     <GridTemplate
       as="section"
@@ -26,7 +30,11 @@ const Login = () => {
     >
       <PageBackground />
       <InformationBlock />
-      <LoginCard />
+      {showRegistration ? (
+        <RegistrationCard handleShowLoginCard={handleShowLoginCard} />
+      ) : (
+        <LoginCard handleShowRegistrationCard={handleShowRegistrationCard} />
+      )}
     </GridTemplate>
   );
 };
@@ -51,6 +59,7 @@ const PageBackground = () => {
 };
 
 const InformationBlock = () => {
+  const { t } = useTranslation('login');
   return (
     <Box
       sx={{
@@ -66,7 +75,7 @@ const InformationBlock = () => {
           lineHeight: 1
         }}
       >
-        Welcome to the chat!!
+        {t('title')}
       </Heading>
       <Paragraph
         sx={{
@@ -76,39 +85,39 @@ const InformationBlock = () => {
           mt: '1rem'
         }}
       >
-        Excepteur amet cupidatat dolore ut ex enim dolor. Nostrud ut enim tempor
-        sint consequat mollit nostrud consequat. Quis ipsum deserunt tempor
-        ipsum laboris sit aute laboris amet ipsum ipsum magna amet. Mollit
-        occaecat amet eiusmod fugiat aliquip ut nisi velit velit consectetur
-        enim ea.
+        {t('description')}
       </Paragraph>
     </Box>
   );
 };
 
-const LoginCard = () => {
+type LoginCardProps = {
+  handleShowRegistrationCard: Function;
+};
+const LoginCard = ({ handleShowRegistrationCard }: LoginCardProps) => {
+  const { t } = useTranslation('login');
   return (
     <CardContainer title="Login">
       <LoginForm />
+      <CardFooter isLogin handleClick={handleShowRegistrationCard} />
     </CardContainer>
   );
 };
 
-const RegistrationCard = () => {
+interface RegistrationCardProps {
+  handleShowLoginCard: Function;
+}
+const RegistrationCard = ({ handleShowLoginCard }: RegistrationCardProps) => {
   return (
     <CardContainer>
-      <Box as="form">
-        <TextInput
-          inputId="username-input"
-          label="Username"
-          type="text"
-          name="username"
-        />
-      </Box>
+      Registration form
+      <ReagistrationForm />
+      <CardFooter isLogin={false} handleClick={handleShowLoginCard} />
     </CardContainer>
   );
 };
 
+// Reausable Components
 interface CardContainerProps {
   title?: string;
   children?: React.ReactNode;
@@ -129,5 +138,28 @@ const CardContainer = ({ title, children }: CardContainerProps) => {
       </Heading>
       {children}
     </Box>
+  );
+};
+
+interface CardFooterProps {
+  isLogin: boolean;
+  handleClick: Function;
+}
+const CardFooter = ({ isLogin, handleClick }: CardFooterProps) => {
+  const { t } = useTranslation('login');
+
+  return (
+    <Paragraph
+      sx={{
+        fontFamily: 'secondary',
+        fontSize: '1rem',
+        mt: '1rem'
+      }}
+    >
+      {t(isLogin ? 'noAccountQuestion' : 'haveAccountQuestion')},{' '}
+      <Button onClick={() => handleClick()} variant="clear">
+        {t(isLogin ? 'createAccount' : 'login')}
+      </Button>
+    </Paragraph>
   );
 };

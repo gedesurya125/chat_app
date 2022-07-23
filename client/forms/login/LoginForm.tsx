@@ -1,7 +1,8 @@
 import React from 'react';
 
+// External Component
 import { Form, Formik } from 'formik';
-
+import useTranslation from 'next-translate/useTranslation';
 // Local Components
 import { TextInput, PrimaryButton } from 'components';
 
@@ -9,6 +10,7 @@ import { TextInput, PrimaryButton } from 'components';
 import { LoginFormSchema } from './validationSchema';
 
 export const LoginForm = () => {
+  const { t } = useTranslation('login');
   return (
     <Formik
       enableReinitialize
@@ -37,7 +39,7 @@ export const LoginForm = () => {
             mt: '1rem'
           }}
         >
-          Login
+          {t('login')}
         </PrimaryButton>
       </Form>
     </Formik>

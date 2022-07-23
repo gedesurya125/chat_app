@@ -1,9 +1,20 @@
-import { gql } from "apollo-server-core";
+import { gql } from 'apollo-server-core';
 
-export const typeDefs = gql`
-  type Query {
+export const userSchema = gql`
+  extend type Query {
     users: [User!]!
-    blogPosts: [BlogPost!]!
+  }
+
+  extend type Mutation {
+    userRegistration(input: UserRegistration): String!
+  }
+
+  input UserRegistration {
+    firstName: String!
+    middleName: String!
+    lastName: String!
+    email: String!
+    phone: String!
   }
 
   type User {
@@ -15,13 +26,6 @@ export const typeDefs = gql`
     userName: String!
     password: String!
     messages: [Message!]!
-  }
-
-  type BlogPost {
-    id: ID!
-    title: String!
-    subTitle: String!
-    article: String!
   }
 
   type Message {
